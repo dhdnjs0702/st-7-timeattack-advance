@@ -9,30 +9,28 @@ export default function Detail() {
   // TODO: 필수: useQuery 로 리팩터링 하세요.
   // TODO: 선택: useQuery 로 리팩터링 후, useTodoQuery 커스텀훅으로 정리해 보세요.
 
-  const {
-    data: todoDetail,
-    isPending,
-    isError,
-  } = useQuery({
-    queryKey: ["todoDetail"],
-    queryFn: fetchDetail,
-  });
-
   const fetchDetail = async () => {
     try {
-      const response = await todoApi(`/todos/${id}`);
+      const response = await todoApi.get(`/todos/${id}`);
+
       return response.data;
     } catch (err) {
       console.log(err);
     }
   };
 
-  if (isPending) return <div style={{ fontSize: 36 }}>로딩중...</div>;
+  const {
+    data: todoDetail,
+    isPengind,
+    isError,
+  } = useQuery({
+    queryKey: ["todoDetail"],
+    queryFn: fetchDetail,
+  });
+
+  if (isPengind) return <div style={{ fontSize: 36 }}>로딩중...</div>;
   if (isError) {
-    console.error(isError);
-    return (
-      <div style={{ fontSize: 24 }}>에러가 발생했습니다: {isError.message}</div>
-    );
+    return <div style={{ fontSize: 24 }}>에러가 발생했습니다</div>;
   }
 
   return (

@@ -12,7 +12,7 @@ export default function Home() {
       const response = await todoApi.get("/todos");
       return response.data;
     } catch (err) {
-      console.log("err=>", err);
+      console.log(err);
     }
   };
 
@@ -24,7 +24,6 @@ export default function Home() {
     queryKey: ["todos"],
     queryFn: fetchData,
   });
-
   console.log(todos);
 
   if (isPending) {
@@ -41,7 +40,7 @@ export default function Home() {
   return (
     <>
       <h2>서버통신 투두리스트 by useState</h2>
-      <TodoForm />
+      <TodoForm fetchData={fetchData} />
       <TodoList todos={todos} />
     </>
   );
