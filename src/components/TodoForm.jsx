@@ -24,7 +24,7 @@ export default function TodoForm() {
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["todos"] });
+      queryClient.invalidateQueries({ queryKey: ["todos"] }); //왜 안되지??
     },
   });
 

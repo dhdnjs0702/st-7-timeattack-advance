@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { todoApi } from "../api/todos";
+
 import { useQuery } from "@tanstack/react-query";
+import { fetchDetail } from "../customHook/todoHooks";
 
 export default function Detail() {
   const { id } = useParams();
@@ -9,23 +10,13 @@ export default function Detail() {
   // TODO: 필수: useQuery 로 리팩터링 하세요.
   // TODO: 선택: useQuery 로 리팩터링 후, useTodoQuery 커스텀훅으로 정리해 보세요.
 
-  const fetchDetail = async () => {
-    try {
-      const response = await todoApi.get(`/todos/${id}`);
-
-      return response.data;
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   const {
     data: todoDetail,
     isPengind,
     isError,
   } = useQuery({
     queryKey: ["todoDetail"],
-    queryFn: fetchDetail,
+    queryFn: () => fetchDetail(id),
   });
 
   if (isPengind) return <div style={{ fontSize: 36 }}>로딩중...</div>;
@@ -33,6 +24,7 @@ export default function Detail() {
     return <div style={{ fontSize: 24 }}>에러가 발생했습니다</div>;
   }
 
+  console.log(todoDetail);
   return (
     <div>
       <button onClick={() => navigate("/")}>홈으로 이동</button>
